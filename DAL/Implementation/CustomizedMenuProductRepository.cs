@@ -11,30 +11,32 @@ using AutoMapper.QueryableExtensions;
 
 namespace DAL.Implementation
 {
-    public class CustomizedMenuProductRepository : IRepository<CustomizedMenuProductDTO>
+    public class CustomizedMenuProductRepository : ICustomizedMenuProductRepository
     {
         private readonly IMapper _mapper;
+        private readonly string _connectionString;
 
-        public CustomizedMenuProductRepository(IMapper mapper)
+        public CustomizedMenuProductRepository(IMapper mapper, string connectionString)
         {
             _mapper = mapper;
+            this._connectionString = connectionString;
         }
         public async Task<IEnumerable<CustomizedMenuProductDTO>> GetAllAsync()
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             return await _mapper.ProjectTo<CustomizedMenuProductDTO>(context.CustomizedMenuProducts).ToListAsync();
         }
 
         public async Task<CustomizedMenuProductDTO> GetByIdAsync(int id)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var entity = await context.CustomizedMenuProducts.FindAsync(id);
             return _mapper.Map<CustomizedMenuProductDTO>(entity);
         }
 
         public async Task<CustomizedMenuProductDTO> AddAsync(CustomizedMenuProductDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var add_entity = _mapper.Map<CustomizedMenuProduct>(entity);
             await context.CustomizedMenuProducts.AddAsync(add_entity);
             await context.SaveChangesAsync();
@@ -43,7 +45,7 @@ namespace DAL.Implementation
 
         public async Task<CustomizedMenuProductDTO> UpdateAsync(CustomizedMenuProductDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var update_entity = _mapper.Map<CustomizedMenuProduct>(entity);
             context.CustomizedMenuProducts.Update(update_entity);
             await context.SaveChangesAsync();
@@ -52,7 +54,7 @@ namespace DAL.Implementation
 
         public async Task<CustomizedMenuProductDTO> DeleteAsync(int id)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var entity = await context.CustomizedMenuProducts.FindAsync(id);
             if (entity == null)
             {

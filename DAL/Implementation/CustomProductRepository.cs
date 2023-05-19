@@ -10,30 +10,32 @@ using System.Threading.Tasks;
 
 namespace DAL.Implementation
 {
-    public class CustomProductRepository : IRepository<CustomProductDTO>
+    public class CustomProductRepository : ICustomProductRepository
     {
         private readonly IMapper _mapper;
+        private readonly string _connectionString;
 
-        public CustomProductRepository(IMapper mapper)
+        public CustomProductRepository(IMapper mapper, string connectionString)
         {
             _mapper = mapper;
+            _connectionString = connectionString;
         }
         public async Task<IEnumerable<CustomProductDTO>> GetAllAsync()
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             return await _mapper.ProjectTo<CustomProductDTO>(context.CustomProducts).ToListAsync();
         }
 
         public async Task<CustomProductDTO> GetByIdAsync(int id)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var entity = await context.CustomProducts.FindAsync(id);
             return _mapper.Map<CustomProductDTO>(entity);
         }
 
         public async Task<CustomProductDTO> AddAsync(CustomProductDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var add_entity = _mapper.Map<CustomProduct>(entity);
             await context.CustomProducts.AddAsync(add_entity);
             await context.SaveChangesAsync();
@@ -42,7 +44,7 @@ namespace DAL.Implementation
 
         public async Task<CustomProductDTO> UpdateAsync(CustomProductDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var update_entity = _mapper.Map<CustomProduct>(entity);
             context.CustomProducts.Update(update_entity);
             await context.SaveChangesAsync();
@@ -51,7 +53,7 @@ namespace DAL.Implementation
 
         public async Task<CustomProductDTO> DeleteAsync(int id)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var entity = await context.CustomProducts.FindAsync(id);
             if (entity == null)
             {

@@ -14,8 +14,8 @@ var mapperConfig = new MapperConfiguration(cfg =>
 
 IMapper mapper = mapperConfig.CreateMapper();
 
-IRepository<RoleDTO> RoleRepository = new RoleRepository(mapper);
-IRepository<OrderStatusDTO> OrderStatusRepository = new OrderStatusRepository(mapper);
+IRoleRepository RoleRepository = new RoleRepository(mapper, "Host=localhost;Database=PizzeriaTest;Username=postgres;Password=postgres");
+IOrderStatusRepository OrderStatusRepository = new OrderStatusRepository(mapper, "Host=localhost;Database=PizzeriaTest;Username=postgres;Password=postgres");
 
 var statuses = await OrderStatusRepository.GetAllAsync();
 

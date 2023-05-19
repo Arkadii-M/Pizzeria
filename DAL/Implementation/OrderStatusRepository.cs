@@ -10,30 +10,32 @@ using System.Threading.Tasks;
 
 namespace DAL.Implementation
 {
-    public class OrderStatusRepository : IRepository<OrderStatusDTO>
+    public class OrderStatusRepository : IOrderStatusRepository
     {
         private readonly IMapper _mapper;
+        private readonly string _connectionString;
 
-        public OrderStatusRepository(IMapper mapper)
+        public OrderStatusRepository(IMapper mapper, string connectionString)
         {
             _mapper = mapper;
+            this._connectionString = connectionString;
         }
         public async Task<IEnumerable<OrderStatusDTO>> GetAllAsync()
         {
-            using var context = new PizzeriaContext();
-            return await _mapper.ProjectTo <OrderStatusDTO> (context.OrderStatuses).ToListAsync();
+            using var context = new PizzeriaContext(_connectionString);
+            return await _mapper.ProjectTo<OrderStatusDTO>(context.OrderStatuses).ToListAsync();
         }
 
         public async Task<OrderStatusDTO> GetByIdAsync(int id)
         {
-            using var context = new PizzeriaContext();
-            var entity =  await context.OrderStatuses.FindAsync(id);
+            using var context = new PizzeriaContext(_connectionString);
+            var entity = await context.OrderStatuses.FindAsync(id);
             return _mapper.Map<OrderStatusDTO>(entity);
         }
 
         public async Task<OrderStatusDTO> AddAsync(OrderStatusDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var add_entity = _mapper.Map<OrderStatus>(entity);
             await context.OrderStatuses.AddAsync(add_entity);
             await context.SaveChangesAsync();
@@ -42,7 +44,7 @@ namespace DAL.Implementation
 
         public async Task<OrderStatusDTO> UpdateAsync(OrderStatusDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var update_entity = _mapper.Map<OrderStatus>(entity);
             context.OrderStatuses.Update(update_entity);
             await context.SaveChangesAsync();
@@ -51,7 +53,7 @@ namespace DAL.Implementation
 
         public async Task<OrderStatusDTO> DeleteAsync(int id)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var entity = await context.OrderStatuses.FindAsync(id);
             if (entity == null)
             {

@@ -6,8 +6,13 @@ namespace DAL;
 
 public partial class PizzeriaContext : DbContext
 {
+    private readonly string ? _connectionString;
     public PizzeriaContext()
     {
+    }
+    public PizzeriaContext(string connectionString)
+    {
+        _connectionString = connectionString;
     }
 
     public PizzeriaContext(DbContextOptions<PizzeriaContext> options)
@@ -35,9 +40,11 @@ public partial class PizzeriaContext : DbContext
 
     public virtual DbSet<UserStatus> UserStatuses { get; set; }
 
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseNpgsql("Host=localhost;Database=PizzeriaTest;Username=postgres;Password=postgres");
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=localhost;Database=PizzeriaTest;Username=postgres;Password=postgres");
+        => optionsBuilder.UseNpgsql(_connectionString?? throw new Exception("No connection string is provided via constructor"));
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

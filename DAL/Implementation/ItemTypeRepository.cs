@@ -10,30 +10,32 @@ using System.Threading.Tasks;
 
 namespace DAL.Implementation
 {
-    public class ItemTypeRepository : IRepository<ItemTypeDTO>
+    public class ItemTypeRepository : IItemTypeRepository
     {
         private readonly IMapper _mapper;
+        private readonly string _connectionString;
 
-        public ItemTypeRepository(IMapper mapper)
+        public ItemTypeRepository(IMapper mapper, string connectionString)
         {
             _mapper = mapper;
+            this._connectionString = connectionString;
         }
         public async Task<IEnumerable<ItemTypeDTO>> GetAllAsync()
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             return await _mapper.ProjectTo<ItemTypeDTO>(context.ItemTypes).ToListAsync();
         }
 
         public async Task<ItemTypeDTO> GetByIdAsync(int id)
         {
-            using var context = new PizzeriaContext();
-            var entity =  await context.ItemTypes.FindAsync(id);
+            using var context = new PizzeriaContext(_connectionString);
+            var entity = await context.ItemTypes.FindAsync(id);
             return _mapper.Map<ItemTypeDTO>(entity);
         }
 
         public async Task<ItemTypeDTO> AddAsync(ItemTypeDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var add_entity = _mapper.Map<ItemType>(entity);
             await context.ItemTypes.AddAsync(add_entity);
             await context.SaveChangesAsync();
@@ -42,7 +44,7 @@ namespace DAL.Implementation
 
         public async Task<ItemTypeDTO> UpdateAsync(ItemTypeDTO entity)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var update_entity = _mapper.Map<ItemType>(entity);
             context.ItemTypes.Update(update_entity);
             await context.SaveChangesAsync();
@@ -51,7 +53,7 @@ namespace DAL.Implementation
 
         public async Task<ItemTypeDTO> DeleteAsync(int id)
         {
-            using var context = new PizzeriaContext();
+            using var context = new PizzeriaContext(_connectionString);
             var entity = await context.ItemTypes.FindAsync(id);
             if (entity == null)
             {
