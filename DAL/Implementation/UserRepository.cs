@@ -65,5 +65,12 @@ namespace DAL.Implementation
             await e.SaveChangesAsync();
             return _mapper.Map<UserDTO>(entity);
         }
+
+        public async Task<UserDTO> GetByUserName(string username)
+        {
+            using var e = new PizzeriaContext(_connectionString);
+            var entity = await e.Users.Where(u => u.UserName == username).FirstOrDefaultAsync();
+            return _mapper.Map<UserDTO>(entity);
+        }
     }
 }

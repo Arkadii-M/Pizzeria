@@ -8,6 +8,7 @@ namespace DAL.Interface
         Task<UserDTO> DeleteAsync(int id);
         Task<IEnumerable<UserDTO>> GetAllAsync();
         Task<UserDTO> GetByIdAsync(int id);
+        Task<UserDTO> GetByUserName(string name);
         Task<UserDTO> UpdateAsync(UserDTO entity);
     }
 }
