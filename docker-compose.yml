@@ -2,6 +2,7 @@ version: '3.4'
 
 services:
   api:
+    container_name: API
     image: ${DOCKER_REGISTRY-}api
     ports:
      - '62136:443'
@@ -10,10 +11,14 @@ services:
       dockerfile: API/Dockerfile
     environment:
       - ConnectionString=Host=db;Database=postgres;Username=postgres;Password=postgres
+      - Issuer=JWT_AUTH_ISSUER
+      - Audience=JWT_AUTH_AUDIENCE
+      - SigningKey=JWT_AUTH_KEY_LONG_ENOUGH_LONGER_IS_BETTER
     depends_on:
     - db
 
   db:
+   container_name: DATABASE
    image: postgres:15.3-alpine
    restart: always
    environment:

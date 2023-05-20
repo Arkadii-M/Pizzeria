@@ -29,7 +29,10 @@ namespace DAL.Implementation
         public async Task<OrderDTO> GetByIdAsync(int id)
         {
             using var context = new PizzeriaContext(_connectionString);
-            var entity = await context.Orders.FindAsync(id);
+            //var entity = await context.Orders
+            //    .Include(o => o.OrderStatus)
+            //    .Include(o => o.OrderDetails).FirstOrDefaultAsync(f => f.OrderId == id);
+            var entity = await context.Orders.Include(o => o.OrderStatus).FirstOrDefaultAsync(f => f.OrderId == id);
             return _mapper.Map<OrderDTO>(entity);
         }
 
@@ -48,7 +51,7 @@ namespace DAL.Implementation
             var update_entity = _mapper.Map<Order>(entity);
             context.Orders.Update(update_entity);
             await context.SaveChangesAsync();
-            return _mapper.Map<OrderDTO>(update_entity);
+            return await GetByIdAsync(entity.OrderId);
         }
 
         public async Task<OrderDTO> DeleteAsync(int id)

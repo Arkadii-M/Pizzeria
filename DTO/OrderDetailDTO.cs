@@ -15,5 +15,5 @@ public partial class OrderDetailDTO
 
     public virtual MenuDTO Item { get; set; } = null!;
 
-    public virtual OrderDTO Order { get; set; } = null!;
+    //public virtual OrderDTO Order { get; set; } = null!;
 }

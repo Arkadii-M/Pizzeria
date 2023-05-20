@@ -10,5 +10,7 @@ namespace BLL.Interface
     public interface ICustomProductSevice
     {
         public Task<IEnumerable<CustomProductDTO>> GetAllCustomProducts();
+        public Task<IEnumerable<CustomProductDTO>> GetPizzaCustomProducts();
+        public Task<IEnumerable<CustomProductDTO>> GetSaladCustomProducts();
     }
 }

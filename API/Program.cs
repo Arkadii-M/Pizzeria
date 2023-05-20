@@ -3,13 +3,21 @@ using BLL.Implementation;
 using BLL.Interface;
 using DAL.Implementation;
 using DAL.Interface;
+using API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Configuration.UserSecrets;
 
 var builder = WebApplication.CreateBuilder(args);
 
 
-// TODO: place connection string here or set envrimoment variable
-//const string connectionString = "Host=localhost;Database=PizzeriaTest;Username=postgres;Password=postgres";
 string connectionString = Environment.GetEnvironmentVariable("ConnectionString") ?? throw new ArgumentException("Missing env var: ConnectionString");
+
+string issuer = Environment.GetEnvironmentVariable("Issuer") ?? throw new ArgumentException("Missing env var: Issuer");
+string audience = Environment.GetEnvironmentVariable("Audience") ?? throw new ArgumentException("Missing env var: Audience");
+string signingKey = Environment.GetEnvironmentVariable("SigningKey") ?? throw new ArgumentException("Missing env var: SigningKey");
 
 
 
@@ -24,6 +32,8 @@ IMapper mapper = new Mapper(config);
 
 // Register services
 
+builder.Services
+    .AddSingleton<ITokenService, TokenService>(_ => new TokenService(issuer,audience,signingKey));
 
 builder.Services
     .AddTransient<IUserRepository,UserRepository>(_ => new UserRepository(mapper,connectionString))
@@ -41,6 +51,7 @@ builder.Services
 builder.Services
     .AddTransient<IAuthenticationService, AuthenticationService>()
     .AddTransient<IRegisterService,RegisterService>()
+    .AddTransient<IUserService, UserService>()
     .AddTransient<IRoleService,RoleService>()
     .AddTransient<IOrderService,OrderService>()
     .AddTransient<IOrderStatusService, OrderStatusService>()
@@ -54,8 +65,103 @@ builder.Services
 
 
 // Add swagger
+var securityScheme = new OpenApiSecurityScheme()
+{
+    Name = "Authorization",
+    Type = SecuritySchemeType.ApiKey,
+    Scheme = "Bearer",
+    BearerFormat = "JWT",
+    In = ParameterLocation.Header,
+    Description = "JSON Web Token based security",
+};
+
+var securityReq = new OpenApiSecurityRequirement()
+{
+    {
+        new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference
+            {
+                Type = ReferenceType.SecurityScheme,
+                Id = "Bearer"
+            }
+        },
+        new string[] {}
+    }
+};
+
+var contact = new OpenApiContact()
+{
+    Name = "Mohamad Lawand",
+    Email = "hello@mohamadlawand.com",
+    Url = new Uri("http://www.mohamadlawand.com")
+};
+
+var license = new OpenApiLicense()
+{
+    Name = "Free License",
+    Url = new Uri("http://www.mohamadlawand.com")
+};
+
+var info = new OpenApiInfo()
+{
+    Version = "v1",
+    Title = "Minimal API - JWT Authentication with Swagger demo",
+    Description = "Implementing JWT Authentication in Minimal API",
+    TermsOfService = new Uri("http://www.example.com"),
+    Contact = contact,
+    License = license
+};
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(o =>
+{
+    o.SwaggerDoc("v1", info);
+    o.AddSecurityDefinition("Bearer", securityScheme);
+    o.AddSecurityRequirement(securityReq);
+});
+
+
+
+
+
+builder.Services.AddControllers();
+
+//// Add swagger
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
+
+
+// Enable cors
+builder.Services.AddCors(c =>
+{
+    c.AddPolicy("AllowOrigin", options =>
+    {
+        options.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
+// Authorization
+builder.Services.AddAuthorization();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = issuer,
+
+            ValidateAudience = true,
+            ValidAudience = audience,
+
+            ValidateLifetime = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(signingKey)),
+            ValidateIssuerSigningKey = true,
+        };
+    });
+
 
 
 
@@ -68,10 +174,22 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/", () => "Hello World!");
-app.MapGet("/statuses",async (IOrderStatusService service) =>
-{
-    return await service.GetAllStatuses();
-});
+app.UseAuthentication();
+app.UseAuthorization();
+
+
+
+
+//app.MapGet("/", () => "Hello World!");
+//app.MapGet("/statuses",async (IOrderStatusService service) =>
+//{
+//    return await service.GetAllStatuses();
+//});
+
+//app.MapAccountEndpoints();
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
 
 app.Run();

@@ -22,5 +22,17 @@ namespace BLL.Implementation
         {
             return await _customProductRepository.GetAllAsync();
         }
+
+        public async Task<IEnumerable<CustomProductDTO>> GetPizzaCustomProducts()
+        {
+            var all =await this.GetAllCustomProducts();
+            return all.Where(f => f.ProductTypeId == 1);
+        }
+
+        public async Task<IEnumerable<CustomProductDTO>> GetSaladCustomProducts()
+        {
+            var all = await this.GetAllCustomProducts();
+            return all.Where(f => f.ProductTypeId == 2);
+        }
     }
 }

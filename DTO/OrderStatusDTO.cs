@@ -9,5 +9,5 @@ public partial class OrderStatusDTO
 
     public string OrderStatusName { get; set; } = null!;
 
-    public virtual ICollection<OrderDTO> Orders { get; set; } = new List<OrderDTO>();
+    //public virtual ICollection<OrderDTO> Orders { get; set; } = new List<OrderDTO>();
 }

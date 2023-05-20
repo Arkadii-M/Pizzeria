@@ -12,15 +12,33 @@ namespace BLL.Implementation
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderService;
+        private readonly IOrderDetailRepository orderDetailRepository;
 
-        public OrderService(IOrderRepository orderService, IUserRepository userRepository)
+        public OrderService(IOrderRepository orderService, IOrderDetailRepository orderDetailRepository, IUserRepository userRepository)
         {
             _orderService = orderService;
+            this.orderDetailRepository = orderDetailRepository;
         }
 
-        public async Task<OrderDTO> AddOrder(OrderDTO order)
+        public async Task<OrderDTO> AddOrder(CustomerOrderDTO order)
         {
-            return await _orderService.AddAsync(order);
+            var dborder =  await _orderService.AddAsync(new OrderDTO
+            {
+                OrderDate = order.OrderDate,
+                UserId = order.UserId,
+            });
+
+            foreach(var orderItem in order.OrderedMenu)
+            {
+                await orderDetailRepository.AddAsync(new OrderDetailDTO
+                {
+                    OrderId = dborder.OrderId,
+                    IsReady = false,
+                    ItemId = orderItem.ItemId
+                });
+            }
+
+            return await this.GetOrderById(dborder.OrderId);
         }
 
         public async Task<OrderDTO> CancelOrder(int orderId)
@@ -67,7 +85,8 @@ namespace BLL.Implementation
             var state = OrderState.OrderState.GetOrderStateById(order.OrderStatusId ?? throw new Exception("OrderStatusId was null "));
             state = state.AssignNextStatus();
 
-            order.OrderStatusId = state.CurrentStateId;
+            order.OrderStatusId = state.CurrentStateId; 
+            order.OrderStatus.OrderStatusId = state.CurrentStateId;
             return await _orderService.UpdateAsync(order);
         }
     }

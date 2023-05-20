@@ -69,7 +69,7 @@ namespace DAL.Implementation
         public async Task<UserDTO> GetByUserName(string username)
         {
             using var e = new PizzeriaContext(_connectionString);
-            var entity = await e.Users.Where(u => u.UserName == username).FirstOrDefaultAsync();
+            var entity = await e.Users.Where(u => u.UserName == username).Include(u => u.Role).FirstOrDefaultAsync();
             return _mapper.Map<UserDTO>(entity);
         }
     }

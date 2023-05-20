@@ -13,7 +13,7 @@ namespace BLL.Interface
         public Task<IEnumerable<OrderDTO>> GetUserOrders(string username);
         public Task<IEnumerable<OrderDTO>> GetUserOrders(int userId);
         public Task<OrderDTO> GetOrderById(int orderId);
-        public Task<OrderDTO> AddOrder(OrderDTO order);
+        public Task<OrderDTO> AddOrder(CustomerOrderDTO order);
         public Task<OrderDTO> ProcessOrder(int orderId);
         public Task<OrderDTO> CancelOrder(int orderId);
     }

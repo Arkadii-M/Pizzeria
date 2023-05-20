@@ -17,5 +17,5 @@ public partial class OrderDTO
 
     public virtual OrderStatusDTO? OrderStatus { get; set; }
 
-    public virtual UserDTO User { get; set; } = null!;
+    public virtual UserDTO? User { get; set; } = null!;
 }

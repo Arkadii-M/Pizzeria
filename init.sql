@@ -5,7 +5,7 @@ CREATE TABLE ROLES (
 );
 
 insert into ROLES(ROLE_NAME) values('CUSTOMER');
-insert into ROLES(ROLE_NAME) values('COOK');
+insert into ROLES(ROLE_NAME) values('ADMIN');
 
 CREATE TABLE USER_STATUS (
   USER_STATUS_ID SERIAL NOT NULL,

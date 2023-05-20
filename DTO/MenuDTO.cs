@@ -17,5 +17,5 @@ public partial class MenuDTO
 
     public virtual ItemTypeDTO ItemType { get; set; } = null!;
 
-    public virtual ICollection<OrderDetailDTO> OrderDetails { get; set; } = new List<OrderDetailDTO>();
+    //public virtual ICollection<OrderDetailDTO> OrderDetails { get; set; } = new List<OrderDetailDTO>();
 }
