@@ -51,6 +51,8 @@ CREATE TABLE users
     CONSTRAINT user_status_fk FOREIGN KEY (user_status_id) REFERENCES user_status (user_status_id) 
 );
 
+insert into users("user_name","password","email") values('test_user','password','email');
+
 CREATE TABLE ORDERS (
   order_id SERIAL NOT NULL,
   USER_ID BIGINT NOT NULL,
@@ -61,6 +63,7 @@ CREATE TABLE ORDERS (
   CONSTRAINT order_status_fk FOREIGN KEY (ORDER_STATUS_ID) REFERENCES ORDER_STATUS(ORDER_STATUS_ID) 
 );
 
+
 CREATE TABLE MENU (
   ITEM_ID SERIAL NOT NULL,
   ITEM_NAME VARCHAR(100) NOT NULL UNIQUE,
@@ -70,6 +73,17 @@ CREATE TABLE MENU (
   PRIMARY KEY (ITEM_ID),
   CONSTRAINT ITEM_TYPE_ID_FK FOREIGN KEY (ITEM_TYPE_ID) REFERENCES ITEM_TYPE (ITEM_TYPE_ID)
 );
+
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('Papperoni',100,1,false);
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('Neapolitan Pizza',200,1,false);
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('Neapolitan Pizza',320,1,false);
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('Neapolitan Pizza',80,1,false);
+
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('salami',10,1,true);
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('onion',10,1,true);
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('mushroom',8,1,true);
+insert into MENU(ITEM_NAME,PRICE,ITEM_TYPE_ID,IS_CUSTOM) values('ketchup',20,1,true);
+
 
 CREATE TABLE ORDER_DETAILS (
   order_details_id SERIAL NOT NULL,
@@ -96,3 +110,8 @@ CREATE TABLE CUSTOM_PRODUCTS (
   PRIMARY KEY (PRODUCT_ID),
   FOREIGN KEY (PRODUCT_TYPE_ID) REFERENCES ITEM_TYPE (ITEM_TYPE_ID)
 );
+
+insert into CUSTOM_PRODUCTS(PRODUCT_NAME,PRICE,PRODUCT_TYPE_ID) values('salami',10,1);
+insert into CUSTOM_PRODUCTS(PRODUCT_NAME,PRICE,PRODUCT_TYPE_ID) values('onion',10,1);
+insert into CUSTOM_PRODUCTS(PRODUCT_NAME,PRICE,PRODUCT_TYPE_ID) values('mushroom',8,1);
+insert into CUSTOM_PRODUCTS(PRODUCT_NAME,PRICE,PRODUCT_TYPE_ID) values('ketchup',20,1);
