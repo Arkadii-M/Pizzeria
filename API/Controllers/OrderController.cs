@@ -43,6 +43,19 @@ namespace API.Controllers
             return Ok(await  _orderService.ProcessOrder(id));
         }
 
+        [Authorize]
+        [HttpPost("cancel/{id}")]
+        public async Task<ActionResult<IEnumerable<OrderDTO>>> CancelOrder(int id)
+        {
+            var username = HttpContext.User.FindFirstValue(ClaimTypes.Name);
+            var user = await _userService.GetByUserName(username);
+            var order = await _orderService.GetOrderById(id);
+            if(order.UserId == user.UserId)
+            {
+                return Ok(await _orderService.CancelOrder(id));
+            }
+            return BadRequest("Only user ordered can cancel this order");
+        }
 
 
         [Authorize]

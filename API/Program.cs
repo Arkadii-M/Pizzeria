@@ -178,7 +178,12 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 
-
+app.UseCors(options =>
+{
+    options.AllowAnyOrigin()
+    .AllowAnyHeader()
+    .AllowAnyMethod();
+});
 
 //app.MapGet("/", () => "Hello World!");
 //app.MapGet("/statuses",async (IOrderStatusService service) =>

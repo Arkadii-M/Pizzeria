@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		init.sql = init.sql
 	EndProjectSection
 EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "WEB", "WEB\WEB.esproj", "{02175277-DF66-448D-B0E0-F5E4F9CE09C6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,12 @@ Global
 		{8FB79694-9EFD-40F2-BC87-2D28ECFCDA4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8FB79694-9EFD-40F2-BC87-2D28ECFCDA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8FB79694-9EFD-40F2-BC87-2D28ECFCDA4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02175277-DF66-448D-B0E0-F5E4F9CE09C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02175277-DF66-448D-B0E0-F5E4F9CE09C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02175277-DF66-448D-B0E0-F5E4F9CE09C6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{02175277-DF66-448D-B0E0-F5E4F9CE09C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02175277-DF66-448D-B0E0-F5E4F9CE09C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02175277-DF66-448D-B0E0-F5E4F9CE09C6}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

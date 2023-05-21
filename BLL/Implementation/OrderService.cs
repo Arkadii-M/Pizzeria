@@ -51,6 +51,7 @@ namespace BLL.Implementation
             state = state.CancelOrder();
 
             order.OrderStatusId = state.CurrentStateId;
+            order.OrderStatus.OrderStatusId = state.CurrentStateId;
             return await _orderService.UpdateAsync(order);
         }
 
