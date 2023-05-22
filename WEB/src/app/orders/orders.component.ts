@@ -17,11 +17,11 @@ export class OrdersComponent {
   }
 
   cancelOrder(orderId: number) {
-    return this.http.post(this.baseUrl + 'Order/cancel/' + orderId);
+    return this.http.post(this.baseUrl + 'Order/cancel/' + orderId, {});
   }
 
   processOrder(orderId: number) {
-    return this.http.post(this.baseUrl + 'Order/process/' + orderId);
+    return this.http.post(this.baseUrl + 'Order/process/' + orderId, {});
   }
 
 }

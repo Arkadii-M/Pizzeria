@@ -1,0 +1,32 @@
+<div class="bg-light px-4 py-3 text-uppercase font-weight-bold">
+    Order Summary
+</div>
+<div class="p-4">
+    <p class="font-italic mb-4">Delivery costs will be added depending on choices made during checkout</p>
+    <ul class="list-unstyle mb-4" *ngIf="(basketTotals$ | async) as totals">
+
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">Order Subtotal</strong>
+            <strong>{{totals.subtotal | currency}}</strong>
+        </li>
+
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">Promised Delivery time</strong>
+            <strong>30 min</strong>
+        </li>
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong>Pizza Size</strong>
+            <strong>Standard Large</strong>
+        </li>
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong>Delivery fee (excludes tip)</strong>
+            <strong>{{totals.total * 0.05 | currency}}</strong>
+        </li>
+        <li class="d-flex justify-content-between py-3 border-bottom">
+            <strong class="text-muted">Total</strong>
+            <strong>{{totals.total | currency}}</strong>
+        </li>
+
+
+    </ul>
+</div>
