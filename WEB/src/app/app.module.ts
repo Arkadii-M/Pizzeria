@@ -16,12 +16,15 @@ import { ProductItemComponent } from './menu/product-item/product-item.component
 import { PizzaBuilderComponent } from './pizza-builder/pizza-builder.component';
 import { BasketComponent } from './basket/basket.component';
 import { OrdersComponent } from './orders/orders.component';
+import { FoodModule } from './food/food.module';
+import { FoodComponent } from './food/food.component';
 
 const appRoutes: Routes = [
   { path: '', component: AppComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'menu', component: MenuComponent },
+  // { path: 'new-menu', component: FoodComponent },
   { path: 'pizza-builder', component: PizzaBuilderComponent }
 ];
 
@@ -43,7 +46,7 @@ const appRoutes: Routes = [
     BrowserModule, HttpClientModule,
     FormsModule, ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    NgbModule
+    NgbModule, FoodModule
   ],
   providers: [
     {
