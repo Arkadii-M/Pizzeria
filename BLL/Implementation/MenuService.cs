@@ -22,5 +22,10 @@ namespace BLL.Implementation
         {
             return await _menuRepository.GetAllAsync();
         }
+
+        public async Task<MenuDTO> GetMenuById(int id)
+        {
+            return await _menuRepository.GetByIdAsync(id);
+        }
     }
 }

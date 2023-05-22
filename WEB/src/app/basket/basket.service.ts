@@ -19,12 +19,9 @@ export class BasketService {
   constructor(private http: HttpClient, private router: Router, @Inject('BASE_API_URL') private baseUrl: string) { }
 
 
-  addOrder(order: any) {
-    return this.http.post(this.baseUrl + 'Order/add', order);
-  }
-
-
   getBasket(id: string) {
+    var basket: IBasket = JSON.parse(localStorage.getItem('basket_' + id) ?? "");
+    console.log(basket);
     return this.http.get(this.baseUrl + 'basket?id=' + id)
     .pipe(
       map((basket: any) => {
@@ -35,6 +32,7 @@ export class BasketService {
   }
 
   setBasket(basket: IBasket) {
+    localStorage.setItem('basket_' + basket.id, JSON.stringify(basket));
     // @ts-ignore
     return this.http.post(this.baseUrl + 'basket', basket).subscribe((response: IBasket) => {
       this.basketSource.next(response as IBasket);

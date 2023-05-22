@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace BLL.Interface
 {
-    public interface IMenuService
+    public interface IItemTypeService
     {
-        public Task<IEnumerable<MenuDTO>> GetAllMenuItems();
-        public Task<MenuDTO> GetMenuById(int id);
+        public Task<IEnumerable<ItemTypeDTO>> GetAllTypes();
     }
 }

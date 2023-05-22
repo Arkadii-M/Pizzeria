@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using API.MapperProfiles;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,7 @@ string signingKey = Environment.GetEnvironmentVariable("SigningKey") ?? throw ne
 
 var config = new MapperConfiguration(cfg => {
     cfg.AddProfile<DAL.Profiles.MapperProfiles>();
+    cfg.AddProfile<Profiles>();
 });
 
 IMapper mapper = new Mapper(config);
@@ -33,7 +35,8 @@ IMapper mapper = new Mapper(config);
 // Register services
 
 builder.Services
-    .AddSingleton<ITokenService, TokenService>(_ => new TokenService(issuer,audience,signingKey));
+    .AddSingleton<ITokenService, TokenService>(_ => new TokenService(issuer,audience,signingKey))
+    .AddSingleton<IMapper>(_ => new Mapper(config));
 
 builder.Services
     .AddTransient<IUserRepository,UserRepository>(_ => new UserRepository(mapper,connectionString))
@@ -56,6 +59,7 @@ builder.Services
     .AddTransient<IOrderService,OrderService>()
     .AddTransient<IOrderStatusService, OrderStatusService>()
     .AddTransient<IMenuService,MenuService>()
+    .AddTransient<IItemTypeService,ItemTypeService>()
     .AddTransient<ICustomProductSevice,CustomProductSevice>()
     .AddTransient<ICustomizedMenuProductsService,CustomizedMenuProductsService>();
 

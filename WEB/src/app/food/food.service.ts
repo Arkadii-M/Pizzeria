@@ -34,20 +34,33 @@ export class FoodService {
     params = params.append('pageIndex', foodParams.pageNumber.toString());
     params = params.append('pageIndex', foodParams.pageSize.toString());
 
-    return this.http.get<IPagination>(this.baseUrl + 'products', {observe: 'response', params})
+    /*    return this.http.get<IPagination>(this.baseUrl + 'Menu/', {observe: 'response', params})*/
+    return this.http.get<IPagination>(this.baseUrl + 'Menu/', { observe: 'response', params })
       .pipe(
         map(response =>{
           return response.body;
         })
-      );
+
+
+    //return this.http.get<IPagination>(this.baseUrl + 'menu')
+    //  .pipe(
+    //    map(response => {
+    //      return response.body;
+    //    })
+
+
+
+    );
+
+
   }
 
   getProduct(id: number)
   {
-    return this.http.get<IProduct>(this.baseUrl + 'products/' + id);
+    return this.http.get<IProduct>(this.baseUrl + 'Menu/product/' + id);
   }
 
   getTypes() {
-    return this.http.get<IType[]>(this.baseUrl + 'products/types');
+    return this.http.get<IType[]>(this.baseUrl + 'Menu/types');
   }
 }
