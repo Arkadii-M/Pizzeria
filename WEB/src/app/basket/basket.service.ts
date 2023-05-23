@@ -22,13 +22,14 @@ export class BasketService {
   getBasket(id: string) {
     var basket: IBasket = JSON.parse(localStorage.getItem('basket_' + id) ?? "");
     console.log(basket);
-    return this.http.get(this.baseUrl + 'basket?id=' + id)
-    .pipe(
-      map((basket: any) => {
-        this.basketSource.next(basket);
-        this.calculateTotals();
-      })
-    );
+    this.basketSource.next(basket);
+    // return this.http.get(this.baseUrl + 'basket?id=' + id)
+    // .pipe(
+    //   map((basket: any) => {
+    //     this.basketSource.next(basket);
+    //     this.calculateTotals();
+    //   })
+    // );
   }
 
   setBasket(basket: IBasket) {
@@ -85,13 +86,17 @@ export class BasketService {
     }
   }
   deleteBasket(basket: IBasket) {
-    return this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe(() => {
-      this.basketSource.next(null as any);
-      this.basketTotalSource.next(null as any);
-      localStorage.removeItem('basket_id');
-    }, error => {
-      console.log(error);
-    })
+    localStorage.removeItem(`basket_${basket.id}`);
+    this.basketSource.next(null as any);
+    this.basketTotalSource.next(null as any);
+
+    // return this.http.delete(this.baseUrl + 'basket?id=' + basket.id).subscribe(() => {
+    //   this.basketSource.next(null as any);
+    //   this.basketTotalSource.next(null as any);
+    //   localStorage.removeItem('basket_id');
+    // }, error => {
+    //   console.log(error);
+    // })
   }
 
 

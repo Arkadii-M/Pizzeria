@@ -1,0 +1,9 @@
+<ul>
+  <li *ngFor="let topping of toppings">
+    <span>{{ topping.productName }}</span>
+    <span>x {{getToppingCount(topping.productId) ?? 0}} </span>
+    <span class="ingredient-price">Price: {{ topping.price }}₴</span>
+    <button (click)="addTopping(topping)">Add</button>
+  </li>
+</ul>
+<button (click)="applyToppings()">Apply</button>

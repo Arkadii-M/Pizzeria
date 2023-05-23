@@ -1,1 +1,8 @@
-<p>pizza-builder works!</p>
+<ul>
+  <li *ngFor="let pizza of pizzas">
+    {{ pizza.itemName }}
+    <app-topping-list [toppings]="ingridients"
+                      [setPizza]="pizza"
+                      (pizzaOutput)="updatePizza($event)"></app-topping-list>
+  </li>
+</ul>

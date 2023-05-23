@@ -41,7 +41,8 @@ export class MyTopping implements IMyTopping {
 }
 
 export interface IMyPizza {
-   itemId: number,
+  itemId: number,
+  itemName: string,
    items: IMyTopping[];
 }
 
