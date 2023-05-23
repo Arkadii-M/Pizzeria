@@ -1,18 +1,19 @@
+import { IMyPizza, IMyTopping } from "./myPizza";
 import { Pizza } from "./pizza";
 import { Topping } from "./topping";
 
 export class PizzaBuilder {
-  private pizza: Pizza;
+  private pizza: IMyPizza;
 
-  constructor(pizza?: Pizza) {
-    this.pizza = { id: 0, toppings: [] };
+  constructor(pizza: IMyPizza) {
+    this.pizza = pizza;
   }
 
-  addTopping(topping: Topping) {
-    this.pizza.toppings.push(topping)
+  addTopping(topping: IMyTopping) {
+    this.pizza.items.push(topping);
   }
 
-  build(): Pizza {
+  build(): IMyPizza {
     return this.pizza;
   }
 

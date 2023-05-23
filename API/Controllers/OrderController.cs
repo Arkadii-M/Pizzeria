@@ -37,14 +37,14 @@ namespace API.Controllers
 
 
         [Authorize(Roles = "ADMIN")]
-        [HttpPost("process/{id}")]
+        [HttpPost("process")]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> ProcessOrder(int id)
         {
             return Ok(await  _orderService.ProcessOrder(id));
         }
 
         [Authorize]
-        [HttpPost("cancel/{id}")]
+        [HttpPost("cancel")]
         public async Task<ActionResult<IEnumerable<OrderDTO>>> CancelOrder(int id)
         {
             var username = HttpContext.User.FindFirstValue(ClaimTypes.Name);

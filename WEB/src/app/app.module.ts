@@ -23,7 +23,7 @@ const appRoutes: Routes = [
   { path: '', component: AppComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'menu', component: MenuComponent },
+  { path: 'food', component: MenuComponent },
   // { path: 'new-menu', component: FoodComponent },
   { path: 'pizza-builder', component: PizzaBuilderComponent }
 ];
