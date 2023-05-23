@@ -30,6 +30,17 @@ export class BasketService {
     );
   }
 
+  setBasket(basket: IBasket) {
+    localStorage.setItem('basket_' + basket.id, JSON.stringify(basket));
+    // @ts-ignore
+    return this.http.post(this.baseUrl + 'basket', basket).subscribe((response: IBasket) => {
+      this.basketSource.next(response as IBasket);
+      this.calculateTotals();
+    }, error => {
+      console.log(error);
+    });
+  }
+
 
   getCurrentBasketValue() {
     return this.basketSource.value;
@@ -110,7 +121,6 @@ export class BasketService {
     localStorage.setItem('basket_id', basket.id); //persisting the local storage of the browser.
     return basket;
   }
-
   private mapProductItemToBasketItem(item: IProduct, quantity: number): IBasketItem {
     return {
       id: item.id,
