@@ -18,12 +18,15 @@ import { BasketComponent } from './basket/basket.component';
 import { OrdersComponent } from './orders/orders.component';
 import { FoodModule } from './food/food.module';
 import { FoodComponent } from './food/food.component';
+import { SharedModule } from './shared/shared.module';
+import { ToppingListComponent } from './pizza-builder/topping-list/topping-list.component';
 
 const appRoutes: Routes = [
   { path: '', component: AppComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'food', component: MenuComponent },
+  { path: 'basket', component: BasketComponent },
   // { path: 'new-menu', component: FoodComponent },
   { path: 'pizza-builder', component: PizzaBuilderComponent }
 ];
@@ -40,13 +43,14 @@ const appRoutes: Routes = [
     ProductItemComponent,
     PizzaBuilderComponent,
     BasketComponent,
-    OrdersComponent
+    OrdersComponent,
+    ToppingListComponent,
   ],
   imports: [
     BrowserModule, HttpClientModule,
     FormsModule, ReactiveFormsModule,
     RouterModule.forRoot(appRoutes),
-    NgbModule, FoodModule
+    NgbModule, FoodModule, SharedModule
   ],
   providers: [
     {

@@ -17,6 +17,10 @@ namespace API.MapperProfiles
                 .ForMember(d => d.Name, opt => opt.MapFrom(s => s.ItemName))
                 .ForMember(d => d.Price, opt => opt.MapFrom(s => s.Price))
                 .ForMember(d => d.ProductType, opt => opt.MapFrom(s => s.ItemType.ItemTypeName));
+            //CreateMap<CustomProductDTO, Models.CustomProduct>()
+            //    .ForMember(d => d.ProductId, opt => opt.MapFrom(s => s.ProductId))
+            //    .ForMember(d => d.ProductName, opt => opt.MapFrom(s => s.ProductName))
+            //    .ForMember(d => d.Price, opt => opt.MapFrom(s => s.Price));
 
 
         }
